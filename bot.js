@@ -6,7 +6,7 @@ let Pages = [];
 
 let poisonNames = [];
 
-function generateUrls(posionNames) {
+function generateUrls(poisonNames) {
   var url = 'http://www.petpoisonhelpline.com/';
   let urls = [];
   var i;
