@@ -2,10 +2,14 @@
 
 const rp = require('request-promise');
 const cheerio = require('cheerio');
+const PoisonsSchema = require('./model');
 
 const fs = require('fs');
- 
+const http = require('http');
+const httpAgent = new http.Agent();
+httpAgent.maxSockets = 15;
 
+let poisonsRef = [];
 let allPoisons = [];
 let allUrls = [];
 
@@ -16,57 +20,49 @@ rp('http://www.petpoisonhelpline.com/poisons/', function (error, response, html)
   let poisonsByAlpha = $(".link-poison", ".alphebetical-blocks").toArray();
 
   poisonsByAlpha.map( (x, i) => {
-    allPoisons.push(x);
-    allUrls.push(allPoisons[i].attribs["href"]);
+    poisonsRef.push(x);
+    allUrls.push(poisonsRef[i].attribs["href"]);
   });
-  console.log(allUrls);
-
-  // $('li[id*=block]', '.alphebetical-blocks').each(function (index, element) {
-  //   allPoisons[index] = $(this)
-  //     .text()
-  //     .replace(/\t\n/gi, "")
-  //     .trim();
-  //   // poisonList[index]['poison-name'] = poisonItem.eq(0).text().replace(/\t/gi, '').toLowerCase().substring(0, poisonItem.eq(0).text().indexOf('\t'));
-  //   // poisonList[index]['poison-type'] = poisonItem.find('[class=pph_poisonList_typeDisplay]').text().trim().toLowerCase();
-  //   // poisonList[index]['reference-url'] = poisonItem.attr('href')
-  //   });
-    // console.log(allPoisons);
+  return allUrls;
   }
-}).then( function (allUrls) {
+}).then( async function () {
 
-  for (let url of allUrls) {
-      rp({ uri: `${url}`, pool: httpAgent }, function (error, response, html) {
+  let poisonPromises = allUrls.map( function(url) {
+    let newPoison = {};
+    return rp({ uri: `${url}`, pool: httpAgent }, function (error, response, html) {
       if (!error && response.statusCode == 200) { 
         let $ = cheerio.load(html);
+            let poisonName = $('.entry p:contains("Pictured:")').text().toLowerCase();
+            let poisonType = $('.entry p:contains("Poison type:")').text().toLowerCase();
+            let poisonousTo = $('.entry p:contains("Poisonous to:")').text().toLowerCase();
+            let poisonDescription = $('.pf-alignright').next().text().toLowerCase();
+            let levelOfToxicity = $('.entry p:contains("Level of toxicity:")').text().toLowerCase();
+            let symptoms = $('.entry ul').map(function() {
+              return $(this).text().toLowerCase();
+            }).toArray();
+            let alternateNames = $('.entry p:contains("Alternate names:")').text().toLowerCase();
 
-        console.log($);
+            newPoison["poisonName"] = poisonName.split(': ').slice(1).toString();
+            newPoison["poisonType"]= poisonType.split(': ').slice(1).toString();
+            newPoison['poisonousTo'] = poisonousTo.split(': ').slice(1).join('').split(',');
+            newPoison['description'] = poisonDescription.replace(/\n/g, '');
+            newPoison['levelOfToxicity'] = levelOfToxicity.replace(/\n/g, '').split(': ').slice(1).join('');
+            newPoison['symptoms'] = symptoms.toString().split('\n');
+            newPoison['alternateNames'] = alternateNames.replace(/\n/g, ' ').split(': ').slice(1).join('').split(',');
 
-  //         $('.content').each(function (index, element) {
-  //           let poisonousTo = $(element).find('p:nth-child(6)');
-  //           poisonList[index]['poisonous-to'] = poisonousTo.text().split(': ').slice(1);
-            
-  //           let poisonDescription = $(element).find('.pf-content');
-  //           poisonList[index]['description'] = poisonDescription.text().replace(/\n/g, '');
-
-  //           let levelOfToxicity = $(element).find('p:nth-child(7)');
-  //           poisonList[index]['level-of-toxicity'] = levelOfToxicity.text().split(': ').slice(1).join('');
-            
-  //           let symptoms = $(element).find('ul');
-  //           poisonList[index]['symptoms'] = symptoms.text().split(/\n/);
-
-  //           let alternateNames = $(element).find('p:nth-child(14)');
-  //           poisonList[index]['alternate-names'] = alternateNames.text().replace(/\\/g, '').split(': ').slice(1);
-
-  //         })
+            allPoisons.push(newPoison);
       }
     })
-  }
-  }).then(function () {
-    // let data = JSON.stringify(poisonList, null, 2);
-    // fs.writeFileSync('poison-list.json', data, function (err) { 
-    //   if (err) throw err;
-    //   console.log('Data written to file');
-    // })
+  })
+    return Promise.all(poisonPromises).then(async function () {
+      console.log('all poisons', allPoisons);
+      let data = JSON.stringify(allPoisons, null, 2);
+      console.log('we made it to the last .then', data);
+      fs.writeFile('poison-list.json', data, 'utf8', function (err) { 
+        if (err) throw err;
+        console.log('Data written to file');
+      })
+    })
   }).catch( function (err) {
   console.log(err);
   });
