@@ -12,4 +12,4 @@ var PoisonsSchema = new mongoose.Schema({
   symptoms: Array,
   alternateNames: Array,
 });
-module.exports = mongoose.model('Poisons', PoisonsSchema);
+module.exports = mongoose.model('Poison', PoisonsSchema);
