@@ -27,12 +27,6 @@ function stateReducer(state, changes) {
   console.log(changes.type);
   console.log(Object.keys(Downshift.stateChangeTypes));
   switch (changes.type) {
-    case Downshift.stateChangeTypes.changeInput:
-      console.log('change input!');
-      return {
-        ...changes,
-        isOpen: !state.isOpen,
-      }
     case Downshift.stateChangeTypes.clickItem:
       return {
         ...changes,
@@ -82,7 +76,6 @@ class PoisonSearchbox extends Component {
     return (
       <Downshift
         onChange={selection => { 
-          console.log(selection);
           return this.fetchPoison(selection.value)
         }}
         itemToString={item => (item ? item : '')}
@@ -116,7 +109,7 @@ class PoisonSearchbox extends Component {
               <ul className="list-group list-group-flush" {...getMenuProps()}>
                 {isOpen
                   ? poisonNameList
-                    .filter(item => !inputValue || item.value.includes(inputValue))
+                    .filter(item => !inputValue || item.value.includes(inputValue.toLowerCase()))
                     .map((item, index) => (
                       <li className="list-group-item"
                         {...getItemProps({
