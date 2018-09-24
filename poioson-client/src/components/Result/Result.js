@@ -56,7 +56,9 @@ function ResultCard(props) {
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>Poisonous To:</Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+            <ExpansionPanelDetails style={{
+              display: 'block'
+            }}>
             <Typography component="ul" align="center" className="list-group list-group-flush">
               {poisonousTo}
             </Typography>
@@ -66,7 +68,9 @@ function ResultCard(props) {
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>Symptoms</Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+            <ExpansionPanelDetails style={{
+              display: 'block'
+            }}>
             <Typography component="ul" align="center" className="list-group list-group-flush">
                 {symptoms}
             </Typography>
@@ -76,7 +80,9 @@ function ResultCard(props) {
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>Descripton</Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+            <ExpansionPanelDetails style={{
+              display: 'block'
+            }}>
             <Typography component="p" variant="body1" paragraph={true}>
               {poisonSelected.description}
             </Typography>

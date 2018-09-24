@@ -25,6 +25,7 @@ function debounce(fn, time) {
 function stateReducer(state, changes) {
   // this prevents the menu from being closed when the user
   // selects an item with a keyboard or mouse
+  console.log("what is a change?", Object.keys(Downshift.stateChangeTypes));
   switch (changes.type) {
     case Downshift.stateChangeTypes.clickItem:
       return {
@@ -32,6 +33,11 @@ function stateReducer(state, changes) {
         inputValue: '',
         isOpen: !state.isOpen,
         highlightedIndex: state.highlightedIndex,
+      }
+    case Downshift.stateChangeTypes.blurInput:
+      return {
+        ...changes,
+        inputValue: '',
       }
     default:
       return changes
