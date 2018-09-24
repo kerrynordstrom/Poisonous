@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app-hooked.js",
     "postinstall": "npm install --prefix server && npm install --prefix client",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "dotenv": "^6.0.0",
