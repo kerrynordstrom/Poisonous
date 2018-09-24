@@ -1,13 +1,32 @@
 {
   "name": "poisono-us",
+  "main": "app.js",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./server/app-hooked.js",
-    "postinstall": "npm install --prefix server && npm install --prefix poison-client"
+    "start": "node app-hooked.js",
+    "postinstall": "npm install --prefix server && npm install --prefix poison-client",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015-node6": "^0.4.0",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "express-busboy": "^7.0.0",
+    "http": "0.0.0",
+    "mongoose": "^5.2.14",
+    "morgan": "^1.9.1",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-scripts": "1.1.5",
+    "request-promise": "^4.2.2",
+    "source-map-support": "^0.5.9"
   },
   "engines": {
-    "node": "~6.10.3",
-    "npm": "~5.6.0"
+    "node": "~9.2.0",
+    "npm": "~5.10.0"
   }
 }
