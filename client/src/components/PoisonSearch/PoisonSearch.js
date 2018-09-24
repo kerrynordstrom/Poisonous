@@ -24,8 +24,15 @@ function debounce(fn, time) {
 function stateReducer(state, changes) {
   // this prevents the menu from being closed when the user
   // selects an item with a keyboard or mouse
-  alert(changes.type);
+  console.log(changes.type);
+  console.log(Object.keys(Downshift.stateChangeTypes));
   switch (changes.type) {
+    case Downshift.stateChangeTypes.changeInput:
+      console.log('change input!');
+      return {
+        ...changes,
+        isOpen: !state.isOpen,
+      }
     case Downshift.stateChangeTypes.clickItem:
       return {
         ...changes,
@@ -74,10 +81,10 @@ class PoisonSearchbox extends Component {
   render() {
     return (
       <Downshift
-        // onChange={selection => { 
-        //   console.log(selection);
-        //   return this.fetchPoison(selection.value)
-        // }}
+        onChange={selection => { 
+          console.log(selection);
+          return this.fetchPoison(selection.value)
+        }}
         itemToString={item => (item ? item : '')}
         stateReducer={stateReducer}
         >
