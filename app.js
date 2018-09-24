@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 const port = process.env.PORT || 3001;
 // connect to database
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/scraper');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/scraper');
 SourceMapSupport.install();
 app.use('/api', poisonRoutes);
 app.get('/', function (req,res) {
