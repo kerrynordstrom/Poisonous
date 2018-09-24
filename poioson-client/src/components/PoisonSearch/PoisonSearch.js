@@ -1,5 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Searchbox.css"
 import React, {Component} from 'react';
 import axios from 'axios';
 import Downshift from 'downshift';
@@ -25,7 +24,6 @@ function debounce(fn, time) {
 function stateReducer(state, changes) {
   // this prevents the menu from being closed when the user
   // selects an item with a keyboard or mouse
-  console.log("what is a change?", Object.keys(Downshift.stateChangeTypes));
   switch (changes.type) {
     case Downshift.stateChangeTypes.clickItem:
       return {
@@ -46,20 +44,7 @@ function stateReducer(state, changes) {
 
 const baseEndpoint = 'http://localhost:3001/api/'
 
-export default Examples
-
-function Examples() {
-  return (
-    <div className="container h-100">
-      <div className="jumbotron my-auto">
-        <h1 className="display-4">Poisono.us</h1>
-        <PoisonSearch />
-      </div>
-    </div>
-  )
-}
-
-class PoisonSearch extends Component {
+class PoisonSearchbox extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -72,7 +57,7 @@ class PoisonSearch extends Component {
       await poisonNameList.push({value: poison.poisonName});
     });
   }
-  
+ 
   fetchPoison = debounce(value => {
     axios
     .get(baseEndpoint + value)
@@ -154,3 +139,16 @@ class PoisonSearch extends Component {
     )
   }
 }
+
+function PoisonSearch() {
+  return (
+    <div className="container h-100">
+      <div className="jumbotron my-auto">
+        <h1 className="display-4">Poisono.us</h1>
+        <PoisonSearchbox />
+      </div>
+    </div>
+  );
+}
+
+export default PoisonSearch;
