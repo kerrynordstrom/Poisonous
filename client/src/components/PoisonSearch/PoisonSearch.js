@@ -95,7 +95,7 @@ class PoisonSearchbox extends Component {
               <input type="text" className="form-control" aria-describedby="basic-addon1" placeholder="Enter item here"
                 {...getInputProps({
                   onKeyUp: event => {
-                    alert('event type is:', event);
+                    alert('event type is:', event.type);
                     const value = event.target.value
                     if (!value) {
                       return
