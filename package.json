@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "nodemon ./server/app-hooked.js",
     "postinstall": "npm install --prefix server && npm install --prefix poison-client"
   },
   "engines": {
