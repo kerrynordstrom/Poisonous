@@ -1,0 +1,12 @@
+{
+  "name": "poisono-us",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install --prefix server && npm install --prefix poison-client"
+  },
+  "engines": {
+    "node": "~6.10.3",
+    "npm": "~5.6.0"
+  }
+}

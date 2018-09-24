@@ -42,7 +42,7 @@ function stateReducer(state, changes) {
   }
 }
 
-const baseEndpoint = 'http://localhost:3001/api/'
+const baseEndpoint = process.env.NODE_ENV === "development" ? 'http://localhost:3001/api/' : 'http://poisonous.herokuapp.com/api/';
 
 class PoisonSearchbox extends Component {
   constructor(props) {

@@ -2,7 +2,7 @@
 
 const rp = require('request-promise');
 const cheerio = require('cheerio');
-const PoisonsSchema = require('./model');
+const PoisonsSchema = require('./models');
 
 const fs = require('fs');
 const http = require('http');
