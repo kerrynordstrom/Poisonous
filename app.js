@@ -26,12 +26,13 @@ app.use(function(req, res, next) {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "client", "build")));
 // set the port
 const port = process.env.PORT || 3001;
 // connect to database
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/scraper');
+mongoose.connect('mongodb://localhost/scraper');
 SourceMapSupport.install();
 app.use('/api', poisonRoutes);
 app.get('/', function (req,res) {
@@ -42,10 +43,9 @@ app.get('/', function (req,res) {
 app.use('*', function (req, res, next) {
   res.status(404).send('<h2 align=center>Page Not Found!</h2>');
 });
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 // start the server
 app.listen(port, function() {
   console.log(`App Server Listening at ${port}`);
