@@ -74,6 +74,7 @@ class PoisonSearchbox extends Component {
     return (
       <Downshift
         onChange={selection => { 
+          console.log(selection);
           return this.fetchPoison(selection.value)
         }}
         itemToString={item => (item ? item : '')}
@@ -94,8 +95,7 @@ class PoisonSearchbox extends Component {
               <label {...getLabelProps()}>Suspect your animal has been poisoned?</label>
               <input type="text" className="form-control" aria-describedby="basic-addon1" placeholder="Enter item here"
                 {...getInputProps({
-                  onKeyUp: event => {
-                    alert('event type is:', event.type);
+                  onKeyPress: event => {
                     const value = event.target.value
                     if (!value) {
                       return
