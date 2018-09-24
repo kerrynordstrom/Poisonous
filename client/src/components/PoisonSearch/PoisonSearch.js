@@ -94,11 +94,12 @@ class PoisonSearchbox extends Component {
               <label {...getLabelProps()}>Suspect your animal has been poisoned?</label>
               <input type="text" className="form-control" aria-describedby="basic-addon1" placeholder="Enter item here"
                 {...getInputProps({
-                  onChange: event => {
+                  onKeyUp: event => {
                     const value = event.target.value
                     if (!value) {
                       return
                     }
+                    // this.fetchPoison(value);
                     // call the debounce function
                   },
                 })}
