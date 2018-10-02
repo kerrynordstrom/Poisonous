@@ -1,7 +1,4 @@
-{
-    "success": true,
-    "message": "Poisons fetched successfully",
-    "poisons": [
+[
         {
             "poisonousTo": [
                 "cats",
@@ -8614,4 +8611,3 @@
             "levelOfToxicity": "generally severe and life-threatening"
         }
     ]
-}

@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
 import './App.css';
-import PoisonSearch from '../PoisonSearch/PoisonSearch';
+import React, { Component } from 'react';
+import Main from '../Main/Main'
+import NavBar from '../NavBar/NavBar';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-          <PoisonSearch />
+        <NavBar />
+        <Main />
       </div>
     );
   }

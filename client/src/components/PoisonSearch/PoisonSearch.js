@@ -1,9 +1,9 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import React, {Component} from 'react';
 import axios from 'axios';
 import Downshift from 'downshift';
-import poisonList from '../../poisons.json';
+import React, {Component} from 'react';
 import ResultCard from '../Result/Result';
+import poisonList from '../../poisons.json';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 let poisonNameList = [];
 
@@ -24,8 +24,6 @@ function debounce(fn, time) {
 function stateReducer(state, changes) {
   // this prevents the menu from being closed when the user
   // selects an item with a keyboard or mouse
-  console.log(changes.type);
-  console.log(Object.keys(Downshift.stateChangeTypes));
   switch (changes.type) {
     case Downshift.stateChangeTypes.clickItem:
       return {
@@ -55,15 +53,16 @@ class PoisonSearchbox extends Component {
   }
   
   async componentDidMount() {
-    await poisonList.poisons.map(async poison => {
+    await poisonList.map(async poison => {
       await poisonNameList.push({value: poison.poisonName});
     });
   }
- 
+  
   fetchPoison = debounce(value => {
     axios
     .get(baseEndpoint + value)
     .then(response => {
+        console.log(response.data)
         let poisonSelected = response.data.poison[0];
         this.setState({poisons: poisonSelected})
       })
@@ -75,7 +74,8 @@ class PoisonSearchbox extends Component {
   render() {
     return (
       <Downshift
-        onChange={selection => { 
+        onChange={selection => {
+          console.log(selection); 
           return this.fetchPoison(selection.value)
         }}
         itemToString={item => (item ? item : '')}
@@ -125,7 +125,7 @@ class PoisonSearchbox extends Component {
                       >
                         {item.value}
                       </li>
-                    ))
+                    )).slice(0, 5)
                   : null}
               </ul>
               <div>
